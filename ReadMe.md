@@ -33,8 +33,6 @@
         ["decay"] = 10.0,
         ['description'] = 'To be able to remove harness from owned vehicles'
     },
-```
-```
 Add the following code to your server.cfg/resouces.cfg
 ```
 ensure serrulata-harness
