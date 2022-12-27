@@ -1,5 +1,9 @@
 ![Serrulata Studios Banner](https://i.imgur.com/wG4hycs.gif)
 
+# IMPORTANT
+```
+* Delate seatbelt.lua from qb-smallresources 
+* Remove anything to do with harnes from server.lua from qb-smallresources 
 # Installation
 ```
 * Download the script and put it in the [resource] folder.
