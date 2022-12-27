@@ -3,8 +3,11 @@
 # Installation
 ```
 * Download the script and put it in the [resource] folder.
+
 * Upload SQL found harness.sql
+
 * Replace exports['qb-smallresources']:HasHarness() with exports['serrulata-harness']:HasHarness()
+
 * Add Following Items to qb-core > items.lua
 ```
     ['harness'] = {
