@@ -9,6 +9,8 @@
 * Replace exports['qb-smallresources']:HasHarness() with exports['serrulata-harness']:HasHarness()
 
 * Add Following Items to qb-core > items.lua
+
+* Only supports cd_dispatch. Add your own dispatch in main.lua!
 ```
     ['harness'] = {
         ['name'] = 'harness',
@@ -41,12 +43,7 @@ Add the following code to your server.cfg/resouces.cfg
 ensure serrulata-harness
 ```
 
-# Config
-![Serrulata](https://prnt.sc/ryi5lC_cCr9O)
-* Only supports cd_dispatch. Add your own dispatch in main.lua!
-
-
-# Dependencies (QBCore)
+# Dependencies
 * [ps-ui](https://github.com/project-sloth/ps-ui)
 
 # Preview 
