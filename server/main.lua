@@ -1,12 +1,12 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-QBCore.Functions.CreateUseableItem(Config.HernessItem, function(source, item)
+QBCore.Functions.CreateUseableItem('harness', function(source, item)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     TriggerClientEvent('seatbelt:client:useHarnessItemAdd', source)
 end)
 
-QBCore.Functions.CreateUseableItem(Config.HarnessRemoverItem, function(source, item)
+QBCore.Functions.CreateUseableItem('harness_remover', function(source, item)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     TriggerClientEvent('seatbelt:client:useHarnessItemRemove', source)
@@ -58,8 +58,6 @@ RegisterNetEvent('seatbelt:server:RemoveHarnessToVehicle', function(plate)
         function(state)
             if state == 1 then
                 TriggerClientEvent('seatbelt:client:RemovedHarnessToVehicle', src)
-                Player.Functions.AddItem('harness', 1, false)
-                TriggerClientEvent('inventory:client:ItemBox', src,  QBCore.Shared.Items['harness'], 'add')
             else
                 TriggerClientEvent('QBCore:Notify', src, 'Harness Not Found!', 'error')
             end
@@ -69,11 +67,11 @@ RegisterNetEvent('seatbelt:server:RemoveHarnessToVehicle', function(plate)
     end
 end)
 
-RegisterNetEvent('seatbelt:server:RemovedHarnessToVehicleSuccess', function()
+RegisterNetEvent('seatbelt:server:RemovedHarnessToVehicleSuccess', function(plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local hasharness = 0 
     MySQL.Async.execute('UPDATE player_vehicles SET hasharness = ? WHERE plate = ?', {hasharness, plate})                
-    Player.Functions.AddItem(Config.HernessItem, 1, false)
-    TriggerClientEvent('inventory:client:ItemBox', src,  QBCore.Shared.Items[Config.HernessItem], 'add')
+    Player.Functions.AddItem('harness', 1, false)
+    TriggerClientEvent('inventory:client:ItemBox', src,  QBCore.Shared.Items['harness'], 'add')
 end)

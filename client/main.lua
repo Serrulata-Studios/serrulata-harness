@@ -221,7 +221,7 @@ end)
 
 RegisterNetEvent('seatbelt:client:AddedHarnessToVehicle',function()
     LocalPlayer.state:set("inv_busy", true, true)
-    QBCore.Functions.Progressbar("harness_equip", "Attaching Harness To Vehicle", Config.AttachingHarness, false, true, {
+    QBCore.Functions.Progressbar("harness_equip", "Attaching Harness To Vehicle", 1000, false, true, {
         disableMovement = false,
         disableCarMovement = false,
         disableMouse = false,
@@ -234,39 +234,41 @@ end)
 
 RegisterNetEvent('seatbelt:client:RemovedHarnessToVehicle',function()
     LocalPlayer.state:set("inv_busy", true, true)
-    QBCore.Functions.Progressbar("harness_equip", "Removing Harness To Vehicle", Config.RemovingHarness, false, true, {
+    QBCore.Functions.Progressbar("harness_equip", "Removing Harness To Vehicle", 1000, false, true, {
         disableMovement = false,
         disableCarMovement = false,
         disableMouse = false,
         disableCombat = true,
     }, {}, {}, {}, function()
-        LocalPlayer.state:set("inv_busy", false, true)
-        if success then
-            TriggerServerEvent('RemovedHarnessToVehicleSuccess')
-        else
-            --Cop Call
-            if math.random(1,100) < 50 then
-                if Config.Dispatch = 'cd_dispatch' then
-                    local data = exports['cd_dispatch']:GetPlayerInfo()
-                    TriggerServerEvent('cd_dispatch:AddNotification', { 
-                        job_table = { 'police' },
-                        coords = data.coords,
-                        title = 'Vehicle Tampering',
-                        message = 'A Person is tampering with a vehicle in the area.',
-                        flash = 0,
-                        unique_id = tostring(math.random(0000000, 9999999)),
-                        blip = { sprite = 205, scale = 1.2, colour = 3, flashes = false,
-                        text = '10-60 - Vehicle Tampering',
-                        time = (5 * 60 * 1000),
-                        sound = 1,
-                        },
-                    })
-                else
-                    -- Put your code here
-                end        
+        exports['ps-ui']:Circle(function(success)
+            if success then
+                print('success')
+                local plate = QBCore.Functions.GetPlate(GetVehiclePedIsIn(PlayerPedId()))
+                TriggerServerEvent('seatbelt:server:RemovedHarnessToVehicleSuccess',plate)
+            else
+                if math.random(1,100) < 50 then
+                    if Config.Dispatch == 'cd_dispatch' then
+                        local data = exports['cd_dispatch']:GetPlayerInfo()
+                        TriggerServerEvent('cd_dispatch:AddNotification', { 
+                            job_table = { 'police' },
+                            coords = data.coords,
+                            title = 'Vehicle Tampering',
+                            message = 'A Person is tampering with a vehicle in the area.',
+                            flash = 0,
+                            unique_id = tostring(math.random(0000000, 9999999)),
+                            blip = { sprite = 205, scale = 1.2, colour = 3, flashes = false,
+                            text = '10-60 - Vehicle Tampering',
+                            time = (5 * 60 * 1000),
+                            sound = 1,
+                            },
+                        })
+                    else
+                        -- Put your code here
+                    end        
+                end
             end
-        end
-    end, 1, 5) -- NumberOfCircles, MS
+        end, 2, 15) -- NumberOfCircles, MS
+    end)
 end)
 
 RegisterNetEvent('seatbelt:client:toggleHarness', function() -- On Item Use (registered server side)
@@ -276,7 +278,7 @@ RegisterNetEvent('seatbelt:client:toggleHarness', function() -- On Item Use (reg
     if inveh and class ~= 8 and class ~= 13 and class ~= 14 then
         if not harnessOn then
             LocalPlayer.state:set("inv_busy", true, true)
-            QBCore.Functions.Progressbar("harness_equip", "Putting On Harness", Config.PuttingOn, false, true, {
+            QBCore.Functions.Progressbar("harness_equip", "Putting On Harness", 1000, false, true, {
                 disableMovement = false,
                 disableCarMovement = false,
                 disableMouse = false,
@@ -288,7 +290,7 @@ RegisterNetEvent('seatbelt:client:toggleHarness', function() -- On Item Use (reg
             end)
         else
             LocalPlayer.state:set("inv_busy", true, true)
-            QBCore.Functions.Progressbar("harness_equip", "Taking Off Harness", Config.TakingOff, false, true, {
+            QBCore.Functions.Progressbar("harness_equip", "Taking Off Harness", 1000, false, true, {
                 disableMovement = false,
                 disableCarMovement = false,
                 disableMouse = false,
@@ -313,4 +315,4 @@ RegisterCommand('+toggleseatbelt', function()
     TriggerServerEvent('qb-samllresources:server:hasHarness', plate)
 end)
 
-RegisterKeyMapping('toggleseatbelt', 'Toggle Seatbelt', 'keyboard', Config.Keybind)
+RegisterKeyMapping('+toggleseatbelt', 'Toggle Seatbelt', 'keyboard', 'b')
